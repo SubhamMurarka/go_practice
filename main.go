@@ -8,16 +8,6 @@ import (
 	"time"
 )
 
-// func checkAnswer(answer string, correctAnswer string) (correct, incorrect int) {
-// 	correct = 0
-// 	incorrect = 0
-// 	if answer == correctAnswer {
-// 		correct++
-// 	} else {
-// 		incorrect++
-// 	}
-// 	return correct, incorrect
-// }
 
 type Pair struct {
 	First  string
