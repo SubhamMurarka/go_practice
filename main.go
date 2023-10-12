@@ -15,9 +15,8 @@ func userInput(question string, done chan bool, ch chan string) {
 		ch <- answer
 }
 
-func main() {
-
-	fd, error := os.Open("/home/murarka/go_project/problems.csv")
+func loadQuestions(address string)(records [][]string, err error){
+	d, error := os.Open("/home/murarka/go_project/problems.csv")
 
 	if error != nil {
 		log.Fatal(error)
@@ -29,10 +28,16 @@ func main() {
 	fileReader := csv.NewReader(fd)
 	records, error := fileReader.ReadAll()
 
-	if error != nil {
-		log.Fatal(error)
-	}
+	return records,err
+}
 
+func main() {
+	const address := "/home/murarka/go_project/problems.csv"
+	records, error := loadQuestions(address)
+	if err != nil{
+          log.Fatal(error)
+	}
+	
 	timeout := 5 * time.Second
 	ch := make(chan string)
 	var correct int
