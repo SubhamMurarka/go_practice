@@ -7,16 +7,17 @@ import (
 	"os"
 	"time"
 )
+
 func userInput(question string, done chan bool, ch chan string) {
-		fmt.Printf("%v\n", question)
-		var answer string
-		fmt.Scan(&answer)
-		done <- true
-		ch <- answer
+	fmt.Printf("%v\n", question)
+	var answer string
+	fmt.Scan(&answer)
+	done <- true
+	ch <- answer
 }
 
-func loadQuestions(address string)(records [][]string, err error){
-	d, error := os.Open("/home/murarka/go_project/problems.csv")
+func loadQuestions(address string) (records [][]string, err error) {
+	fd, error := os.Open("/home/murarka/go_project/problems.csv")
 
 	if error != nil {
 		log.Fatal(error)
@@ -26,18 +27,18 @@ func loadQuestions(address string)(records [][]string, err error){
 	defer fd.Close()
 
 	fileReader := csv.NewReader(fd)
-	records, error := fileReader.ReadAll()
+	records, error = fileReader.ReadAll()
 
-	return records,err
+	return records, err
 }
 
 func main() {
-	const address := "/home/murarka/go_project/problems.csv"
+	const address = "/home/murarka/go_project/problems.csv"
 	records, error := loadQuestions(address)
-	if err != nil{
-          log.Fatal(error)
+	if error != nil {
+		log.Fatal(error)
 	}
-	
+
 	timeout := 5 * time.Second
 	ch := make(chan string)
 	var correct int
