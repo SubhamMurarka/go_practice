@@ -8,12 +8,31 @@ import (
 	"time"
 )
 
-func userInput(question string, done chan bool, ch chan string) {
-	fmt.Printf("%v\n", question)
-	var answer string
-	fmt.Scan(&answer)
-	done <- true
-	ch <- answer
+// func checkAnswer(answer string, correctAnswer string) (correct, incorrect int) {
+// 	correct = 0
+// 	incorrect = 0
+// 	if answer == correctAnswer {
+// 		correct++
+// 	} else {
+// 		incorrect++
+// 	}
+// 	return correct, incorrect
+// }
+
+type Pair struct {
+	First  string
+	Second int
+}
+
+func userInput(records [][]string, ch chan Pair) {
+	for i := 1; i <= 107; i++ {
+		fmt.Printf("%v\n", records[i][0])
+		var answer string
+		fmt.Scan(&answer)
+		pair := Pair{First: answer, Second: i}
+		ch <- pair
+		// TODO RESET TIMER AFTER EACH INPUT
+	}
 }
 
 func main() {
