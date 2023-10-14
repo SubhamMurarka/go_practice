@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -17,7 +18,7 @@ func userInput(question string, done chan bool, ch chan string) {
 }
 
 func loadQuestions(address string) (records [][]string, err error) {
-	fd, error := os.Open("/home/murarka/go_project/problems.csv")
+	fd, error := os.Open(address)
 
 	if error != nil {
 		log.Fatal(error)
@@ -33,19 +34,23 @@ func loadQuestions(address string) (records [][]string, err error) {
 }
 
 func main() {
-	const address = "/home/murarka/go_project/problems.csv"
+	var limit int
+	flag.IntVar(&limit, "limit", 4, "change timeout duration")
+	var address string
+	flag.StringVar(&address, "file", "/home/murarka/go_project/problems.csv", "add different file format (question,answer)")
+	flag.Parse()
 	records, error := loadQuestions(address)
 	if error != nil {
 		log.Fatal(error)
 	}
-
-	timeout := 5 * time.Second
 	ch := make(chan string)
 	var correct int
 	var incorrect int
-
-	for i := 1; i <= 107; i++ {
-		done := make(chan bool)
+	done := make(chan bool)
+	timeout := time.Duration(limit) * time.Second
+	fmt.Println("Press the Enter Key to start!")
+	fmt.Scanln() // wait for Enter Key
+	for i := 1; i < len(records); i++ {
 		go userInput(records[i][0], done, ch)
 
 		select {
